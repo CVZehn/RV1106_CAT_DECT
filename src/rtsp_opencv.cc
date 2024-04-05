@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <vector>
 
+
 #include "rtsp_demo.h"
 #include "sample_comm.h"
 #include "yolov5.h"
@@ -29,6 +30,19 @@
 #include "pubsub_c_opts.h"
 
 #define COMPILATION_DATE __DATE__ " " __TIME__
+
+//#define USE_RGA_RESIZE 
+#ifdef USE_RGA_RESIZE
+#include "im2d_version.h"
+#include "im2d_common.h"
+#include "RgaUtils.h"
+#include "im2d.hpp"
+#include "dma_alloc.h"
+
+int src_buf_size, dst_buf_size;
+int src_dma_fd, dst_dma_fd;
+char *src_buf, *dst_buf;
+#endif
 
 #if 0
 struct timeval t;;
@@ -199,11 +213,9 @@ int test_vpss_init(int VpssChn, int width, int height) {
 	return s32Ret;
 }
 
-cv::Mat kernel ; 
-cv::BackgroundSubtractorMOG2 *fgMaskMOG2;
-
 int pollingarea = 0;
 int pollingareacnt = 3;
+
 cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 {
 	float scaleX = (float)model_width  / (float)iwidth; //0.888
@@ -217,7 +229,46 @@ cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 	topPadding  = (model_height - inputHeight) / 2;	
 	
 	cv::Mat inputScale;
+
+#ifdef USE_RGA_RESIZE
+	int ret;
+	rga_buffer_handle_t src_handle, dst_handle;
+    rga_buffer_t src = {};
+    rga_buffer_t dst = {};
+    im_rect src_rect = {};
+    im_rect dst_rect = {};
+
+    pre_debug_time();
+    memcpy(src_buf, input.data,src_buf_size);
+    memset(dst_buf, 0x33, dst_buf_size);
+	
+    src_handle = importbuffer_fd(src_dma_fd, src_buf_size);
+    dst_handle = importbuffer_fd(dst_dma_fd, dst_buf_size);
+    if (src_handle == 0 || dst_handle == 0) {
+        printf("import dma_fd error!\n");
+       // goto free_buf;
+    }
+
+    src = wrapbuffer_handle(src_handle, width, height, RK_FORMAT_RGB_888);
+    dst = wrapbuffer_handle(dst_handle, model_width, model_height, RK_FORMAT_RGB_888);
+
+	ret = imcheck(src, dst,src_rect, dst_rect);
+    if (IM_STATUS_NOERROR != ret) {
+        printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
+    }
+	
+    ret = imresize(src, dst);
+    if (ret == IM_STATUS_SUCCESS) {
+        printf(" running success!\n");
+         pre_debug_time();
+    } else {
+        printf(" running failed, %s\n", imStrError((IM_STATUS)ret));
+       // goto release_buffer;
+    }
+#else
     cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
+#endif
+
 	cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
     cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
     inputScale.copyTo(letterboxImage(roi));
@@ -327,9 +378,25 @@ int main(int argc, char *argv[]) {
 	RK_CODEC_ID_E enCodecType = RK_VIDEO_ID_AVC;
 	test_venc_init(0, width, height, enCodecType);
 
-	kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
-	fgMaskMOG2 = cv::createBackgroundSubtractorMOG2();
+#ifdef USE_RGA_RESIZE
 
+    src_buf_size = width / 2 * height * get_bpp_from_format(RK_FORMAT_RGB_888);
+    dst_buf_size = model_width * model_height * get_bpp_from_format(RK_FORMAT_RGB_888);
+    printf("mem size :%x %x\n", src_buf_size, dst_buf_size);
+
+	ret = dma_buf_alloc(RV1106_CMA_HEAP_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
+    if (ret < 0) {
+        printf("alloc src CMA buffer failed!\n");
+        return -1;
+    }
+
+    ret = dma_buf_alloc(RV1106_CMA_HEAP_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
+    if (ret < 0) {
+        printf("alloc dst CMA buffer failed!\n");
+        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
+        return -1;
+    }
+#endif 
 	mqtt_init();
 	//struct md_ctx *md_ctx;
 	//md_ctx = move_detection_init(width, height, 640, 640, 0);

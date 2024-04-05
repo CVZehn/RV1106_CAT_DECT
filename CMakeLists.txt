@@ -20,8 +20,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common
                     ${CMAKE_CURRENT_SOURCE_DIR}/mqttlib/openssl/include   
                     ${CMAKE_CURRENT_SOURCE_DIR}/mqttlib/paho/include
                     ${CMAKE_CURRENT_SOURCE_DIR}/src
+                    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/allocator/dma
                     #${CMAKE_CURRENT_SOURCE_DIR}/move_detect/include 
                     ${CMAKE_CURRENT_SOURCE_DIR}/media_out/include
+                    ${CMAKE_CURRENT_SOURCE_DIR}/media_out/include/rga
                     ${CMAKE_CURRENT_SOURCE_DIR}/media_out/include/rkaiq
                     ${CMAKE_CURRENT_SOURCE_DIR}/media_out/include/rkaiq/uAPI2
                     ${CMAKE_CURRENT_SOURCE_DIR}/media_out/include/rkaiq/common
@@ -52,6 +54,7 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}  
+               ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/allocator/dma/dma_alloc.cpp
                ${CMAKE_CURRENT_SOURCE_DIR}/src/paho_c_pub.c
                ${CMAKE_CURRENT_SOURCE_DIR}/src/rtsp_opencv.cc
                ${CMAKE_CURRENT_SOURCE_DIR}/postprocess.cc               
