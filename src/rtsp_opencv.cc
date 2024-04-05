@@ -29,6 +29,17 @@
 #include "pubsub_c_opts.h"
 
 #define COMPILATION_DATE __DATE__ " " __TIME__
+
+#if 0
+struct timeval t;;
+#define pre_debug_time() do {\
+    gettimeofday( &t, NULL );\
+	printf(" %d time: %3.4f \r\n", __LINE__ ,t.tv_sec + t.tv_usec*1e-6);\
+}while(0)
+#else
+#define pre_debug_time() 
+#endif
+
 // disp size
 int width    = 1920;
 int height   = 1080;
@@ -205,9 +216,8 @@ cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 	leftPadding = (model_width  - inputWidth) / 2;
 	topPadding  = (model_height - inputHeight) / 2;	
 	
-
 	cv::Mat inputScale;
-    cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);	
+    cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
 	cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
     cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
     inputScale.copyTo(letterboxImage(roi));
@@ -217,7 +227,8 @@ cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 
 cv::Mat pollingdecetbox(cv::Mat input)
 {
-	pollingarea = (pollingarea++) % pollingareacnt;
+	pollingarea = (pollingarea + 1) % pollingareacnt;
+	// printf("area %d!\n", pollingarea);
 	#if 0
 	if(pollingarea == 0)
 	{
@@ -227,41 +238,20 @@ cv::Mat pollingdecetbox(cv::Mat input)
 	#endif 
 
 	{
-		cv::Mat letterboxImage(960, 1080, CV_8UC3,cv::Scalar(0, 0, 0));
-    	cv::Rect region_of_interest(640 * pollingarea, 0, 960, 1080);
-    	input(region_of_interest).copyTo(letterboxImage);
-		return letterbox(letterboxImage, 960 ,1080);; 	
+		//cv::Mat letterboxImage(960, 1080, CV_8UC3,cv::Scalar(0, 0, 0));
+    	cv::Rect region_of_interest(480 * pollingarea, 0, 960, 1080);
+		cv::Mat letterboxImage = input(region_of_interest);
+		return letterbox(letterboxImage, 960 ,1080);
 	}
 }
 
-void motion_identify(cv::Mat input) 
-{
-    // 图像尺寸缩小
-	cv::Mat inputScale;
-    cv::resize(input, inputScale,cv::Size(), 500, 500, cv::INTER_LINEAR);
-    //  背景模型生成
-	cv::Mat fgMask;
-	cv::Mat fgMask1;
-    fgMaskMOG2->apply(inputScale, fgMask);
-	cv::morphologyEx(fgMask, fgMask, cv::MORPH_OPEN, kernel);
-	std::vector<std::vector<cv::Point>> contours;
-	std::vector<cv::Vec4i> 	hierarchy;
-	cv::findContours(fgMask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-	
-	/*
-	for(int n=0;n<(int)contours.size();n++)
-	{
-		cv::Rect rect = cv::boundingRect(cv::Mat(contours[n]));
-		cv::rectangle(input, rect, cv::Scalar(255,0,0), 1);
-	}*/
-}
-
 void mapCoordinates(int *x, int *y) {	
+	int ap = pollingarea * 480;
 	int mx = *x - leftPadding;
 	int my = *y - topPadding;
 
-    *x = (int)((float)mx / scale);
-    *y = (int)((float)my / scale);
+    *x = (int)((float)mx / scale) + ap;
+    *y = (int)((float)my / scale); 
 }
 
 rtsp_demo_handle g_rtsplive = NULL;
@@ -351,12 +341,14 @@ int main(int argc, char *argv[]) {
 	int fire_state = 0;
 	int dect_demo = 0;
 	printf("Compilation Date: %s\n", COMPILATION_DATE);
+
 	while(1)
 	{	
 		// get vpss frame
 		s32Ret = RK_MPI_VPSS_GetChnFrame(0,0, &stVpssFrame,-1);
 		if(s32Ret == RK_SUCCESS)
 		{
+			
 			void *data = RK_MPI_MB_Handle2VirAddr(stVpssFrame.stVFrame.pMbBlk);	
 			
 			//opencv	
@@ -369,8 +361,7 @@ int main(int argc, char *argv[]) {
 			cv::Mat letterboxImage = pollingdecetbox(frame);
 			//cv::Mat letterboxImage = letterbox(frame, width, height);
 			
-			//motion_identify(frame);
-			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3);		
+			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3);
 			inference_yolov5_model(&rknn_app_ctx, &od_results);
 
 			for(int i = 0; i < od_results.count; i++)
