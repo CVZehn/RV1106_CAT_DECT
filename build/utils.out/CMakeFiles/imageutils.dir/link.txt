@@ -1,0 +1,2 @@
+/home/zehn/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-ar qc libimageutils.a CMakeFiles/imageutils.dir/image_utils.c.o
+/home/zehn/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-ranlib libimageutils.a
