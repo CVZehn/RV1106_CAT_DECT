@@ -31,7 +31,7 @@
 
 #define COMPILATION_DATE __DATE__ " " __TIME__
 
-//#define USE_RGA_RESIZE 
+#define USE_RGA_RESIZE 
 #ifdef USE_RGA_RESIZE
 #include "im2d_version.h"
 #include "im2d_common.h"
@@ -39,6 +39,7 @@
 #include "im2d.hpp"
 #include "dma_alloc.h"
 
+rga_buffer_handle_t src_handle, dst_handle;
 int src_buf_size, dst_buf_size;
 int src_dma_fd, dst_dma_fd;
 char *src_buf, *dst_buf;
@@ -58,6 +59,8 @@ struct timeval t;;
 int width    = 1920;
 int height   = 1080;
 
+int srol_width = 1080;
+int srol_height = 1080;	
 // model size
 int model_width = 640;
 int model_height = 640;	
@@ -214,7 +217,18 @@ int test_vpss_init(int VpssChn, int width, int height) {
 }
 
 int pollingarea = 0;
-int pollingareacnt = 3;
+int pollingareacnt = 2;
+int pollingarea_SX = 840;
+
+#if 0
+	static int a = 0;
+	if(a == 40)
+	{
+		printf("-----------------debug pictue  resize.jpg!\n");
+		cv::imwrite("resize.jpg",letterboxImage);
+	}
+	a++;
+#endif
 
 cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 {
@@ -232,48 +246,58 @@ cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 
 #ifdef USE_RGA_RESIZE
 	int ret;
-	rga_buffer_handle_t src_handle, dst_handle;
     rga_buffer_t src = {};
     rga_buffer_t dst = {};
     im_rect src_rect = {};
     im_rect dst_rect = {};
 
     pre_debug_time();
-    memcpy(src_buf, input.data,src_buf_size);
-    memset(dst_buf, 0x33, dst_buf_size);
 	
-    src_handle = importbuffer_fd(src_dma_fd, src_buf_size);
+	cv::Mat tempImage(iwidth, iheight, CV_8UC3,cv::Scalar(0, 0, 0));
+	input.copyTo(tempImage);
+    memcpy(src_buf, tempImage.data, iwidth * iheight * get_bpp_from_format(RK_FORMAT_RGB_888));
+    memset(dst_buf, 0, dst_buf_size);
+	
+    src_handle = importbuffer_fd(src_dma_fd, iwidth * iheight * get_bpp_from_format(RK_FORMAT_RGB_888));
     dst_handle = importbuffer_fd(dst_dma_fd, dst_buf_size);
     if (src_handle == 0 || dst_handle == 0) {
         printf("import dma_fd error!\n");
-       // goto free_buf;
+		return inputScale;
     }
 
-    src = wrapbuffer_handle(src_handle, width, height, RK_FORMAT_RGB_888);
+    src = wrapbuffer_handle(src_handle, iwidth, iheight, RK_FORMAT_RGB_888);
     dst = wrapbuffer_handle(dst_handle, model_width, model_height, RK_FORMAT_RGB_888);
 
-	ret = imcheck(src, dst,src_rect, dst_rect);
+    pre_debug_time();
+	ret = imcheck(src, dst, src_rect, dst_rect);
     if (IM_STATUS_NOERROR != ret) {
         printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
     }
-	
+
     ret = imresize(src, dst);
     if (ret == IM_STATUS_SUCCESS) {
-        printf(" running success!\n");
-         pre_debug_time();
+
+        // printf(" running success!\n");
+		cv::Mat letterboxImage = cv::Mat(cv::Size(model_width, model_height), CV_8UC3, dst_buf);
+        pre_debug_time();
+		return letterboxImage; 	
     } else {
         printf(" running failed, %s\n", imStrError((IM_STATUS)ret));
-       // goto release_buffer;
+    	cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
+		cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
+    	cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
+    	inputScale.copyTo(letterboxImage(roi));
+		return letterboxImage; 	
     }
 #else
     cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
-#endif
-
 	cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
     cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
     inputScale.copyTo(letterboxImage(roi));
-
 	return letterboxImage; 	
+#endif
+
+
 }
 
 cv::Mat pollingdecetbox(cv::Mat input)
@@ -290,14 +314,14 @@ cv::Mat pollingdecetbox(cv::Mat input)
 
 	{
 		//cv::Mat letterboxImage(960, 1080, CV_8UC3,cv::Scalar(0, 0, 0));
-    	cv::Rect region_of_interest(480 * pollingarea, 0, 960, 1080);
+    	cv::Rect region_of_interest(pollingarea_SX * pollingarea, 0, srol_width, srol_height);
 		cv::Mat letterboxImage = input(region_of_interest);
-		return letterbox(letterboxImage, 960 ,1080);
+		return letterbox(letterboxImage, srol_width ,srol_height);
 	}
 }
 
 void mapCoordinates(int *x, int *y) {	
-	int ap = pollingarea * 480;
+	int ap = pollingarea * pollingarea_SX;
 	int mx = *x - leftPadding;
 	int my = *y - topPadding;
 
@@ -378,9 +402,14 @@ int main(int argc, char *argv[]) {
 	RK_CODEC_ID_E enCodecType = RK_VIDEO_ID_AVC;
 	test_venc_init(0, width, height, enCodecType);
 
-#ifdef USE_RGA_RESIZE
+	mqtt_init();
+	//struct md_ctx *md_ctx;
+	//md_ctx = move_detection_init(width, height, 640, 640, 0);
 
-    src_buf_size = width / 2 * height * get_bpp_from_format(RK_FORMAT_RGB_888);
+	pthread_create(&venc_thread_0, NULL, rkipc_get_venc_0, NULL);
+	
+#ifdef USE_RGA_RESIZE
+    src_buf_size = srol_width * srol_height * get_bpp_from_format(RK_FORMAT_RGB_888);
     dst_buf_size = model_width * model_height * get_bpp_from_format(RK_FORMAT_RGB_888);
     printf("mem size :%x %x\n", src_buf_size, dst_buf_size);
 
@@ -397,12 +426,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 #endif 
-	mqtt_init();
-	//struct md_ctx *md_ctx;
-	//md_ctx = move_detection_init(width, height, 640, 640, 0);
 
-	pthread_create(&venc_thread_0, NULL, rkipc_get_venc_0, NULL);
-	
 	printf("venc init success\n");	
 	int person_dectetime = 0;
 	int fire_state = 0;
@@ -471,6 +495,10 @@ int main(int argc, char *argv[]) {
 						person_dectetime = 30 * 10 * 1; //300 = 1m
 						fire_state = 0;
 					}
+					else if(det_result->cls_id == 15 || det_result->cls_id == 16)
+					{
+						mqtt_cat_locationreport(sX, sY, eX, eY);
+					}
 					
 				}
 			}
@@ -512,6 +540,19 @@ int main(int argc, char *argv[]) {
 	RK_MPI_VENC_StopRecvFrame(0);
 	RK_MPI_VENC_DestroyChn(0);
 
+
+#ifdef USE_RGA_RESIZE
+release_buffer:
+    if (src_handle)
+        releasebuffer_handle(src_handle);
+    if (dst_handle)
+        releasebuffer_handle(dst_handle);
+
+    if (src_buf)
+        free(src_buf);
+    if (dst_buf)
+        free(dst_buf);
+#endif
 
 	if (g_rtsplive)
 		rtsp_del_demo(g_rtsplive);

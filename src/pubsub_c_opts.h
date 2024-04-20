@@ -93,6 +93,7 @@ void logProperties(MQTTProperties *props);
 int mqtt_init();
  void mqtt_guard_on();
  void mqtt_guard_off();
+ void mqtt_cat_locationreport(int sX, int sY, int eX, int eY);
 
 #endif
 

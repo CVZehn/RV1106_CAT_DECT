@@ -436,6 +436,14 @@ int mqtt_init()
 	MQTTAsync_send(client, "/livingroom/guard/cat/state/sw", 3, "OFF", opts.qos, opts.retained, &pub_opts);
  }
 
+ void mqtt_cat_locationreport(int sX, int sY, int eX, int eY)
+ {
+	char data_buff[64];
+	memset(data_buff, 0, 64);
+	sprintf(data_buff,"sX:%d sY:%d eX:%d eY:%d", sX, sY, eX, eY);
+	MQTTAsync_send(client, "/livingroom/guard/cat/state/ps", strlen(data_buff), data_buff, opts.qos, opts.retained, &pub_opts);
+ }
+
 #ifdef __cplusplus
 }
 #endif
