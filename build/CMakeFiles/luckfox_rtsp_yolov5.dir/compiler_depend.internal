@@ -290,6 +290,64 @@ CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o
  /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/getopt.h
  /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/time.h
 
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/paho_c_sub.c
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTAsync.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/stdio.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/features.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/uClibc_config.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/cdefs.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/lib/gcc/arm-rockchip830-linux-uclibcgnueabihf/8.3.0/include/stddef.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/types.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/wordsize.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/typesizes.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/uClibc_stdio.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/wchar.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/wchar.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/pthreadtypes.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/endian.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/endian.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/byteswap.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/byteswap.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/byteswap-common.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/byteswap-16.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/lib/gcc/arm-rockchip830-linux-uclibcgnueabihf/8.3.0/include/stdarg.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/stdio_lim.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTExportDeclarations.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTProperties.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTReasonCodes.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTSubscribeOpts.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTClientPersistence.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTClientPersistence.h
+ /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/pubsub_c_opts.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/signal.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/sigset.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/signum.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/time.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/siginfo.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/sigaction.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/sigcontext.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/asm/sigcontext.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/sigstack.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/sigthread.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/string.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/stdlib.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/waitflags.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/waitstatus.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/types.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/select.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/select.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/time.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/sysmacros.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/alloca.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/sys/time.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/unistd.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/posix_opt.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/uClibc_posix_opt.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/environments.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/confname.h
+ /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/bits/getopt.h
+
 CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o
  /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/rtsp_opencv.cc
  /home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/arm-rockchip830-linux-uclibcgnueabihf/sysroot/usr/include/assert.h
@@ -921,21 +979,6 @@ CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o
  /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/pubsub_c_opts.h
  /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTAsync.h
  /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/mqttlib/paho/include/MQTTClientPersistence.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_version.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_common.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_type.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/rga.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/RgaUtils.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d.hpp
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_version.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_buffer.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_common.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_mpi.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_single.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_task.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/media_out/include/rga/im2d_expand.h
- /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/3rdparty/allocator/dma/dma_alloc.h
 
 CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o
  /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/yolov5.cc

@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/paho_c_pub.c" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o" "gcc" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o.d"
+  "/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/paho_c_sub.c" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o" "gcc" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o.d"
   "/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/3rdparty/allocator/dma/dma_alloc.cpp" "CMakeFiles/luckfox_rtsp_yolov5.dir/3rdparty/allocator/dma/dma_alloc.cpp.o" "gcc" "CMakeFiles/luckfox_rtsp_yolov5.dir/3rdparty/allocator/dma/dma_alloc.cpp.o.d"
   "/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/postprocess.cc" "CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o" "gcc" "CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o.d"
   "/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/rtsp_opencv.cc" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o" "gcc" "CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o.d"

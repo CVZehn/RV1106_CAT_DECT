@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o.d"
   "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o"
   "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o.d"
+  "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o"
+  "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o.d"
   "CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o"
   "CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o.d"
   "CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o"

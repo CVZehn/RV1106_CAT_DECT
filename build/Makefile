@@ -285,6 +285,30 @@ src/paho_c_pub.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/luckfox_rtsp_yolov5.dir/build.make CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.s
 .PHONY : src/paho_c_pub.c.s
 
+src/paho_c_sub.o: src/paho_c_sub.c.o
+.PHONY : src/paho_c_sub.o
+
+# target to build an object file
+src/paho_c_sub.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/luckfox_rtsp_yolov5.dir/build.make CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o
+.PHONY : src/paho_c_sub.c.o
+
+src/paho_c_sub.i: src/paho_c_sub.c.i
+.PHONY : src/paho_c_sub.i
+
+# target to preprocess a source file
+src/paho_c_sub.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/luckfox_rtsp_yolov5.dir/build.make CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.i
+.PHONY : src/paho_c_sub.c.i
+
+src/paho_c_sub.s: src/paho_c_sub.c.s
+.PHONY : src/paho_c_sub.s
+
+# target to generate assembly for a file
+src/paho_c_sub.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/luckfox_rtsp_yolov5.dir/build.make CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.s
+.PHONY : src/paho_c_sub.c.s
+
 src/rtsp_opencv.o: src/rtsp_opencv.cc.o
 .PHONY : src/rtsp_opencv.o
 
@@ -358,6 +382,9 @@ help:
 	@echo "... src/paho_c_pub.o"
 	@echo "... src/paho_c_pub.i"
 	@echo "... src/paho_c_pub.s"
+	@echo "... src/paho_c_sub.o"
+	@echo "... src/paho_c_sub.i"
+	@echo "... src/paho_c_sub.s"
 	@echo "... src/rtsp_opencv.o"
 	@echo "... src/rtsp_opencv.i"
 	@echo "... src/rtsp_opencv.s"
