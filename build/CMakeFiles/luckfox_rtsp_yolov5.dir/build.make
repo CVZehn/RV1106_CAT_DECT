@@ -111,10 +111,24 @@ CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.s"
 	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/paho_c_sub.c -o CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.s
 
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/flags.make
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o: ../src/image_handle.cc
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o"
+	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o -MF CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o.d -o CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o -c /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/image_handle.cc
+
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.i"
+	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/image_handle.cc > CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.i
+
+CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.s"
+	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/image_handle.cc -o CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.s
+
 CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/flags.make
 CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o: ../src/rtsp_opencv.cc
 CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o"
 	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o -MF CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o.d -o CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o -c /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/src/rtsp_opencv.cc
 
 CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.s: cmake_force
 CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/flags.make
 CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o: ../postprocess.cc
 CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o"
 	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o -MF CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o.d -o CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o -c /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/postprocess.cc
 
 CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.s: cmake_force
 CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/flags.make
 CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o: ../yolov5.cc
 CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o: CMakeFiles/luckfox_rtsp_yolov5.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o"
 	/home/zehn/luckfox_sdk/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o -MF CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o.d -o CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o -c /home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/yolov5.cc
 
 CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.i: cmake_force
@@ -158,6 +172,7 @@ luckfox_rtsp_yolov5_OBJECTS = \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/3rdparty/allocator/dma/dma_alloc.cpp.o" \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o" \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o" \
+"CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o" \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o" \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o" \
 "CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o"
@@ -168,6 +183,7 @@ luckfox_rtsp_yolov5_EXTERNAL_OBJECTS =
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/3rdparty/allocator/dma/dma_alloc.cpp.o
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_pub.c.o
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/src/paho_c_sub.c.o
+luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/src/image_handle.cc.o
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/src/rtsp_opencv.cc.o
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/postprocess.cc.o
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/yolov5.cc.o
@@ -182,7 +198,7 @@ luckfox_rtsp_yolov5: ../3rdparty/rknpu2/Linux/armhf-uclibc/librknnmrt.so
 luckfox_rtsp_yolov5: ../lib/libopencv_imgproc.a
 luckfox_rtsp_yolov5: ../lib/libopencv_core.a
 luckfox_rtsp_yolov5: CMakeFiles/luckfox_rtsp_yolov5.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable luckfox_rtsp_yolov5"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zehn/rv1106_rtso_yolov5/RV1106_CAT_DECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable luckfox_rtsp_yolov5"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/luckfox_rtsp_yolov5.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
