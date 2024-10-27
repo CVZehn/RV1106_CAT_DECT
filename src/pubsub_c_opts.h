@@ -91,9 +91,12 @@ int getopts(int argc, char** argv, struct pubsub_opts* opts);
 char* readfile(int* data_len, struct pubsub_opts* opts);
 void logProperties(MQTTProperties *props);
 int mqtt_init();
+int mqttsub_init();
  void mqtt_guard_on();
  void mqtt_guard_off();
  void mqtt_cat_locationreport(int sX, int sY, int eX, int eY);
+void mqtt_guard_ps_set(int sX, int sY, int eX, int eY);
+int Get_TeasingSW();
 
 #endif
 

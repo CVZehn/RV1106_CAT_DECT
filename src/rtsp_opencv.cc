@@ -19,10 +19,7 @@
 #include "yolov5.h"
 //#include "move_detection.h"
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/video/background_segm.hpp>
+#include "image_handle.h"
 //#include <opencv2/imgcodecs.hpp>
 
 
@@ -31,7 +28,7 @@
 
 #define COMPILATION_DATE __DATE__ " " __TIME__
 
-#define USE_RGA_RESIZE 
+//#define USE_RGA_RESIZE 
 #ifdef USE_RGA_RESIZE
 #include "im2d_version.h"
 #include "im2d_common.h"
@@ -55,20 +52,7 @@ struct timeval t;;
 #define pre_debug_time() 
 #endif
 
-// disp size
-int width    = 1920;
-int height   = 1080;
-
-int srol_width = 1080;
-int srol_height = 1080;	
-// model size
-int model_width = 640;
-int model_height = 640;	
-float scale ;
-int leftPadding ;
-int topPadding  ;
-
-static RK_S32 test_venc_init(int chnId, int width, int height, RK_CODEC_ID_E enType) {
+static RK_S32 dm_venc_init(int chnId, int width, int height, RK_CODEC_ID_E enType) {
 	printf("%s\n",__func__);
 	VENC_RECV_PIC_PARAM_S stRecvParam;
 	VENC_CHN_ATTR_S stAttr;
@@ -171,7 +155,7 @@ int vi_chn_init(int channelId, int width, int height) {
 	return ret;
 }
 
-int test_vpss_init(int VpssChn, int width, int height) {
+int dm_vpss_init(int VpssChn, int width, int height) {
 	printf("%s\n",__func__);
 	int s32Ret;
 	VPSS_CHN_ATTR_S stVpssChnAttr;
@@ -216,10 +200,6 @@ int test_vpss_init(int VpssChn, int width, int height) {
 	return s32Ret;
 }
 
-int pollingarea = 0;
-int pollingareacnt = 2;
-int pollingarea_SX = 840;
-
 #if 0
 	static int a = 0;
 	if(a == 40)
@@ -230,105 +210,6 @@ int pollingarea_SX = 840;
 	a++;
 #endif
 
-cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
-{
-	float scaleX = (float)model_width  / (float)iwidth; //0.888
-	float scaleY = (float)model_height / (float)iheight; //1.125	
-	scale = scaleX < scaleY ? scaleX : scaleY;
-	
-	int inputWidth   = (int)((float)iwidth * scale);
-	int inputHeight  = (int)((float)iheight * scale);
-
-	leftPadding = (model_width  - inputWidth) / 2;
-	topPadding  = (model_height - inputHeight) / 2;	
-	
-	cv::Mat inputScale;
-
-#ifdef USE_RGA_RESIZE
-	int ret;
-    rga_buffer_t src = {};
-    rga_buffer_t dst = {};
-    im_rect src_rect = {};
-    im_rect dst_rect = {};
-
-    pre_debug_time();
-	
-	cv::Mat tempImage(iwidth, iheight, CV_8UC3,cv::Scalar(0, 0, 0));
-	input.copyTo(tempImage);
-    memcpy(src_buf, tempImage.data, iwidth * iheight * get_bpp_from_format(RK_FORMAT_RGB_888));
-    memset(dst_buf, 0, dst_buf_size);
-	
-    src_handle = importbuffer_fd(src_dma_fd, iwidth * iheight * get_bpp_from_format(RK_FORMAT_RGB_888));
-    dst_handle = importbuffer_fd(dst_dma_fd, dst_buf_size);
-    if (src_handle == 0 || dst_handle == 0) {
-        printf("import dma_fd error!\n");
-		return inputScale;
-    }
-
-    src = wrapbuffer_handle(src_handle, iwidth, iheight, RK_FORMAT_RGB_888);
-    dst = wrapbuffer_handle(dst_handle, model_width, model_height, RK_FORMAT_RGB_888);
-
-    pre_debug_time();
-	ret = imcheck(src, dst, src_rect, dst_rect);
-    if (IM_STATUS_NOERROR != ret) {
-        printf("%d, check error! %s", __LINE__, imStrError((IM_STATUS)ret));
-    }
-
-    ret = imresize(src, dst);
-    if (ret == IM_STATUS_SUCCESS) {
-
-        // printf(" running success!\n");
-		cv::Mat letterboxImage = cv::Mat(cv::Size(model_width, model_height), CV_8UC3, dst_buf);
-        pre_debug_time();
-		return letterboxImage; 	
-    } else {
-        printf(" running failed, %s\n", imStrError((IM_STATUS)ret));
-    	cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
-		cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
-    	cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
-    	inputScale.copyTo(letterboxImage(roi));
-		return letterboxImage; 	
-    }
-#else
-    cv::resize(input, inputScale, cv::Size(inputWidth,inputHeight), 0, 0, cv::INTER_LINEAR);  //这个地方耗时80ms  需要优化
-	cv::Mat letterboxImage(640, 640, CV_8UC3,cv::Scalar(0, 0, 0));
-    cv::Rect roi(leftPadding, topPadding, inputWidth, inputHeight);
-    inputScale.copyTo(letterboxImage(roi));
-	return letterboxImage; 	
-#endif
-
-
-}
-
-cv::Mat pollingdecetbox(cv::Mat input)
-{
-	pollingarea = (pollingarea + 1) % pollingareacnt;
-	// printf("area %d!\n", pollingarea);
-	#if 0
-	if(pollingarea == 0)
-	{
-		return letterbox(input, width, height);
-	}
-	else
-	#endif 
-
-	{
-		//cv::Mat letterboxImage(960, 1080, CV_8UC3,cv::Scalar(0, 0, 0));
-    	cv::Rect region_of_interest(pollingarea_SX * pollingarea, 0, srol_width, srol_height);
-		cv::Mat letterboxImage = input(region_of_interest);
-		return letterbox(letterboxImage, srol_width ,srol_height);
-	}
-}
-
-void mapCoordinates(int *x, int *y) {	
-	int ap = pollingarea * pollingarea_SX;
-	int mx = *x - leftPadding;
-	int my = *y - topPadding;
-
-    *x = (int)((float)mx / scale) + ap;
-    *y = (int)((float)my / scale); 
-}
-
 rtsp_demo_handle g_rtsplive = NULL;
 rtsp_session_handle g_rtsp_session;
 static pthread_t venc_thread_0;
@@ -336,10 +217,13 @@ static void *rkipc_get_venc_0(void *arg);
 
 int main(int argc, char *argv[]) {
 	RK_S32 s32Ret = 0; 
-	int sX,sY,eX,eY; 
 		
+	int height = RAW_IMAGE_HEIGHT;
+	int width = RAW_IMAGE_WIDTH;
+	int model_height = get_model_hight();
+	int model_width = get_model_width();
+
 	// Rknn model
-	char text[16];
 	rknn_app_context_t rknn_app_ctx;	
 	object_detect_result_list od_results;
     int ret;
@@ -377,10 +261,10 @@ int main(int argc, char *argv[]) {
 	
 	// vi init
 	vi_dev_init();
-	vi_chn_init(0, width, height);
+	vi_chn_init(0, RAW_IMAGE_WIDTH, RAW_IMAGE_HEIGHT);
 
 	// vpss init
-	test_vpss_init(0, width, height);
+	dm_vpss_init(0, RAW_IMAGE_WIDTH, RAW_IMAGE_HEIGHT);
 
 	// bind vi to vpss
 	MPP_CHN_S stSrcChn, stvpssChn;
@@ -400,9 +284,10 @@ int main(int argc, char *argv[]) {
 
 	// venc init
 	RK_CODEC_ID_E enCodecType = RK_VIDEO_ID_AVC;
-	test_venc_init(0, width, height, enCodecType);
+	dm_venc_init(0, RAW_IMAGE_WIDTH, RAW_IMAGE_HEIGHT, enCodecType);
 
 	mqtt_init();
+	mqttsub_init();
 	//struct md_ctx *md_ctx;
 	//md_ctx = move_detection_init(width, height, 640, 640, 0);
 
@@ -436,11 +321,11 @@ int main(int argc, char *argv[]) {
 	while(1)
 	{	
 		// get vpss frame
-		s32Ret = RK_MPI_VPSS_GetChnFrame(0,0, &stVpssFrame,-1);
+		s32Ret = RK_MPI_VPSS_GetChnFrame(0,0, &stVpssFrame,-1); 											/*18.1ms*/
 		if(s32Ret == RK_SUCCESS)
 		{
 			
-			void *data = RK_MPI_MB_Handle2VirAddr(stVpssFrame.stVFrame.pMbBlk);	
+			void *data = RK_MPI_MB_Handle2VirAddr(stVpssFrame.stVFrame.pMbBlk);								/*0.7ms*/
 			
 			//opencv	
 			cv::Mat frame(height,width,CV_8UC3,data);	
@@ -449,62 +334,15 @@ int main(int argc, char *argv[]) {
         	//cv::resize(frame, frame640, cv::Size(640,640), 0, 0, cv::INTER_LINEAR);	
 			//letterbox
 			*/
-			cv::Mat letterboxImage = pollingdecetbox(frame);
+			cv::Mat letterboxImage = pollingdecetbox(frame); 												/*104.4ms*/
 			//cv::Mat letterboxImage = letterbox(frame, width, height);
 			
-			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3);
-			inference_yolov5_model(&rknn_app_ctx, &od_results);
-
-			for(int i = 0; i < od_results.count; i++)
-			{	
-				//获取框的四个坐标 
-				if(od_results.count >= 1)
-				{
-					object_detect_result *det_result = &(od_results.results[i]);				
-					if (det_result->cls_id != 0 && det_result->cls_id != 15 && det_result->cls_id != 16)
-					{
-					  continue;
-					}
-					printf("%s @ (%d %d %d %d) %.3f\n", coco_cls_to_name(det_result->cls_id),
-							 det_result->box.left, det_result->box.top,
-							 det_result->box.right, det_result->box.bottom,
-							 det_result->prop);
-	
-					sX = (int)(det_result->box.left   );	
-					sY = (int)(det_result->box.top 	  );	
-					eX = (int)(det_result->box.right  );	
-					eY = (int)(det_result->box.bottom );
-					mapCoordinates(&sX,&sY);
-					mapCoordinates(&eX,&eY);
-
-					cv::rectangle(frame,cv::Point(sX ,sY),
-								        cv::Point(eX ,eY),
-										cv::Scalar(0,255,0),3);
-					sprintf(text, "%s %.1f%%", coco_cls_to_name(det_result->cls_id), det_result->prop * 100);
-					cv::putText(frame,text,cv::Point(sX, sY - 8),
-												 cv::FONT_HERSHEY_SIMPLEX,1,
-												 cv::Scalar(0,255,0),2);
-
-
-					if (det_result->cls_id == 0) {
-						printf("--------------preson\n");
-						if (fire_state == 1) {
-							printf("--------------fire off\n");
-							mqtt_guard_off();
-						}
-						person_dectetime = 30 * 10 * 1; //300 = 1m
-						fire_state = 0;
-					}
-					else if(det_result->cls_id == 15 || det_result->cls_id == 16)
-					{
-						mqtt_cat_locationreport(sX, sY, eX, eY);
-					}
-					
-				}
-			}
-			
-			memcpy(data, frame.data, width * height * 3);	
-							
+			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3); /*6.5ms*/
+			inference_yolov5_model(&rknn_app_ctx, &od_results); 											/*97ms*/
+			/*draw result*/
+			draw_result(frame, &od_results);
+			memcpy(data, frame.data, width * height * 3);	/*7.4ms*/
+						
 		}
 		
 
@@ -517,16 +355,7 @@ int main(int argc, char *argv[]) {
 		if (s32Ret != RK_SUCCESS) {
 			RK_LOGE("RK_MPI_VI_ReleaseChnFrame fail %x", s32Ret);
 		}
-		memset(text,0,8);
-		
-		person_dectetime = (person_dectetime > 0) ? (person_dectetime - 1) : 0;
 				
-		if (person_dectetime == 0 && fire_state == 0)
-		{
-			printf("--------------fire on\n");
-			mqtt_guard_on();
-			fire_state = 1;
-		}
 	}
 
 	RK_MPI_SYS_UnBind(&stSrcChn, &stvpssChn);
@@ -541,7 +370,7 @@ int main(int argc, char *argv[]) {
 	RK_MPI_VENC_DestroyChn(0);
 
 
-#ifdef USE_RGA_RESIZE
+#ifdef USE_RGA_RESIZE  /*目前RGA 终止程序时会有buff无法释放的情况*/
 release_buffer:
     if (src_handle)
         releasebuffer_handle(src_handle);

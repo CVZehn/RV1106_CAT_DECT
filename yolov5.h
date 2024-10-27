@@ -19,6 +19,7 @@
 #include "rknn_api.h"
 #include "common.h"
 
+#define AYSNC_DECT_MODE 1
 
 #if defined(RV1106_1103) 
     typedef struct {

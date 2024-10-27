@@ -56,6 +56,8 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 add_executable(${PROJECT_NAME}  
                ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/allocator/dma/dma_alloc.cpp
                ${CMAKE_CURRENT_SOURCE_DIR}/src/paho_c_pub.c
+               ${CMAKE_CURRENT_SOURCE_DIR}/src/paho_c_sub.c
+               ${CMAKE_CURRENT_SOURCE_DIR}/src/image_handle.cc
                ${CMAKE_CURRENT_SOURCE_DIR}/src/rtsp_opencv.cc
                ${CMAKE_CURRENT_SOURCE_DIR}/postprocess.cc               
                ${CMAKE_CURRENT_SOURCE_DIR}/yolov5.cc  

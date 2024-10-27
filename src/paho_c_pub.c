@@ -426,14 +426,14 @@ int mqtt_init()
 
  void mqtt_guard_on()
  {
-	mypublish(client, 2, "ON");
-	MQTTAsync_send(client, "/livingroom/guard/cat/state/sw", 2, "ON", opts.qos, opts.retained, &pub_opts);
+	//mypublish(client, 2, "ON");
+	//MQTTAsync_send(client, "/livingroom/guard/cat/state/sw", 2, "ON", opts.qos, opts.retained, &pub_opts);
  }
 
  void mqtt_guard_off()
  {
-	mypublish(client, 3, "OFF");
-	MQTTAsync_send(client, "/livingroom/guard/cat/state/sw", 3, "OFF", opts.qos, opts.retained, &pub_opts);
+	//mypublish(client, 3, "OFF");
+	//MQTTAsync_send(client, "/livingroom/guard/cat/state/sw", 3, "OFF", opts.qos, opts.retained, &pub_opts);
  }
 
  void mqtt_cat_locationreport(int sX, int sY, int eX, int eY)
@@ -443,6 +443,26 @@ int mqtt_init()
 	sprintf(data_buff,"sX:%d sY:%d eX:%d eY:%d", sX, sY, eX, eY);
 	MQTTAsync_send(client, "/livingroom/guard/cat/state/ps", strlen(data_buff), data_buff, opts.qos, opts.retained, &pub_opts);
  }
+/*
+炮台范围：
+X: 40-140
+y: 50-75
+*/
+static int shake_val = 5;
+void mqtt_guard_ps_set(int sX, int sY, int eX, int eY)
+{
+	float x_angle,y_angle;
+	float FOV = 98.3;
+	shake_val = -1 * shake_val;
+	x_angle = ((float)sX / 19.2) + 40 + shake_val; //((float)sX * 100 / 1920) + 40
+	y_angle = ((float)sY / 43.2) + 50; //((float)sY * 25 / 1080)  + 50
+	
+
+	char data_buff[64];
+	memset(data_buff, 0, 64);
+	sprintf(data_buff,"%d,%d", (int)x_angle, (int)y_angle);
+	MQTTAsync_send(client, "battery1/coordinate", strlen(data_buff), data_buff, opts.qos, opts.retained, &pub_opts);
+}
 
 #ifdef __cplusplus
 }
