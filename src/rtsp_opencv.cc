@@ -233,11 +233,13 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
+	#if RTSP_ON
 	// rtsp init	
 	g_rtsplive = create_rtsp_demo(554);
 	g_rtsp_session = rtsp_new_session(g_rtsplive, "/live/0");
 	rtsp_set_video(g_rtsp_session, RTSP_CODEC_ID_VIDEO_H264, NULL, 0);
 	rtsp_sync_video_ts(g_rtsp_session, rtsp_get_reltime(), rtsp_get_ntptime());
+	#endif
 	
 	// vi init
 	vi_dev_init();
@@ -270,12 +272,12 @@ int main(int argc, char *argv[]) {
 	mqttsub_init();
 	//struct md_ctx *md_ctx;
 	//md_ctx = move_detection_init(width, height, 640, 640, 0);
-
+#if RTSP_ON
 	ret = pthread_create(&venc_thread_0, NULL, rkipc_get_venc_0, NULL);
 	if (ret != 0) {
 		printf("rkipc_get_venc_0 pthread create fail %x", ret);
 	}
-
+#endif
 	#if USE_ASYNC_RKNN
 	ret = pthread_create(&venc_rknn_thread, NULL, rknn_thread, NULL);
 	if (ret != 0) {
@@ -310,7 +312,7 @@ int main(int argc, char *argv[]) {
 			cv::Mat letterboxImage = pollingdecetbox(frame); 												/*104.4ms*/
 			//cv::Mat letterboxImage = letterbox(frame, width, height);
 		#if USE_ASYNC_RKNN
-			/*获取帧为串行模式 opencv 和 rknn 处理为 队列模式 处理结果和实际输出图像有一帧延迟 */
+			/*获取帧为串行模式 opencv 和 rknn 处理为 队列模式 处理结果和实际推流输出图像有一帧延迟 */
 			while (rkn_queue_add(letterboxImage) < 0);
 			/*draw result*/
 			while (rkn_result_get(&run_result) < 0);
@@ -322,7 +324,7 @@ int main(int argc, char *argv[]) {
 			//pre_debug_time();
 			draw_result(frame, &run_result); 
 			//memcpy(data, frame.data, width * height * 3);	/*7.4ms*/
-			//pre_debug_time();
+			pre_debug_time();
 		}
 		
 

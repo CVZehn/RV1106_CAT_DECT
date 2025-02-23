@@ -110,7 +110,10 @@ cv::Mat letterbox(cv::Mat input, int iwidth, int iheight)
 
     ret = imresize(src, dst);
     if (ret == IM_STATUS_SUCCESS) {
-
+		if (src_handle)
+        	releasebuffer_handle(src_handle);
+    	if (dst_handle)
+        	releasebuffer_handle(dst_handle);
         // printf(" running success!\n");
 		cv::Mat letterboxImage = cv::Mat(cv::Size(model_width, model_height), CV_8UC3, dst_buf);
 		return letterboxImage; 	

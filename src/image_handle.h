@@ -15,6 +15,7 @@
 #define USE_RGA_RESIZE 
 #define USE_ASYNC_RKNN 1
 #define DRAW_LINE 0
+#define RTSP_ON 0
 
 #ifdef USE_RGA_RESIZE
 #include "im2d_version.h"
