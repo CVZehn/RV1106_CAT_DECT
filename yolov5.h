@@ -37,7 +37,7 @@ typedef struct {
     rknn_tensor_attr* output_attrs;
     rknn_tensor_mem* net_mem;
 #if defined(RV1106_1103) 
-    rknn_tensor_mem* input_mems[1];
+    rknn_tensor_mem* input_mems[2];
     rknn_tensor_mem* output_mems[3];
     rknn_dma_buf img_dma_buf;
 #endif

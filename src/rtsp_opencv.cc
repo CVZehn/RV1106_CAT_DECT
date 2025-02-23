@@ -28,29 +28,15 @@
 
 #define COMPILATION_DATE __DATE__ " " __TIME__
 
-//#define USE_RGA_RESIZE 
-#ifdef USE_RGA_RESIZE
-#include "im2d_version.h"
-#include "im2d_common.h"
-#include "RgaUtils.h"
-#include "im2d.hpp"
-#include "dma_alloc.h"
+extern rknn_app_context_t rknn_app_ctx;	
+extern object_detect_result_list od_results[2];
 
-rga_buffer_handle_t src_handle, dst_handle;
-int src_buf_size, dst_buf_size;
-int src_dma_fd, dst_dma_fd;
-char *src_buf, *dst_buf;
-#endif
-
-#if 0
-struct timeval t;;
-#define pre_debug_time() do {\
-    gettimeofday( &t, NULL );\
-	printf(" %d time: %3.4f \r\n", __LINE__ ,t.tv_sec + t.tv_usec*1e-6);\
-}while(0)
-#else
-#define pre_debug_time() 
-#endif
+rtsp_demo_handle g_rtsplive = NULL;
+rtsp_session_handle g_rtsp_session;
+static pthread_t venc_thread_0;
+static pthread_t venc_rknn_thread;
+static void *rkipc_get_venc_0(void *arg);
+int rkn_result_get(object_detect_result_list *result);
 
 static RK_S32 dm_venc_init(int chnId, int width, int height, RK_CODEC_ID_E enType) {
 	printf("%s\n",__func__);
@@ -70,7 +56,7 @@ static RK_S32 dm_venc_init(int chnId, int width, int height, RK_CODEC_ID_E enTyp
 	stAttr.stVencAttr.u32StreamBufCnt = 2;
 	stAttr.stVencAttr.u32BufSize = width * height * 3 / 2;
 	stAttr.stVencAttr.enMirror = MIRROR_NONE;
-		
+
 	stAttr.stRcAttr.enRcMode = VENC_RC_MODE_H264CBR;
 	stAttr.stRcAttr.stH264Cbr.u32BitRate = 3 * 1024;
 	stAttr.stRcAttr.stH264Cbr.u32Gop = 50;
@@ -210,22 +196,16 @@ int dm_vpss_init(int VpssChn, int width, int height) {
 	a++;
 #endif
 
-rtsp_demo_handle g_rtsplive = NULL;
-rtsp_session_handle g_rtsp_session;
-static pthread_t venc_thread_0;
-static void *rkipc_get_venc_0(void *arg);
 
 int main(int argc, char *argv[]) {
 	RK_S32 s32Ret = 0; 
 		
 	int height = RAW_IMAGE_HEIGHT;
 	int width = RAW_IMAGE_WIDTH;
-	int model_height = get_model_hight();
-	int model_width = get_model_width();
+	model_height = get_model_hight();
+	model_width = get_model_width();
 
 	// Rknn model
-	rknn_app_context_t rknn_app_ctx;	
-	object_detect_result_list od_results;
     int ret;
 	const char *model_path = "./model/yolov5.rknn";
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
@@ -291,70 +271,72 @@ int main(int argc, char *argv[]) {
 	//struct md_ctx *md_ctx;
 	//md_ctx = move_detection_init(width, height, 640, 640, 0);
 
-	pthread_create(&venc_thread_0, NULL, rkipc_get_venc_0, NULL);
-	
-#ifdef USE_RGA_RESIZE
-    src_buf_size = srol_width * srol_height * get_bpp_from_format(RK_FORMAT_RGB_888);
-    dst_buf_size = model_width * model_height * get_bpp_from_format(RK_FORMAT_RGB_888);
-    printf("mem size :%x %x\n", src_buf_size, dst_buf_size);
+	ret = pthread_create(&venc_thread_0, NULL, rkipc_get_venc_0, NULL);
+	if (ret != 0) {
+		printf("rkipc_get_venc_0 pthread create fail %x", ret);
+	}
 
-	ret = dma_buf_alloc(RV1106_CMA_HEAP_PATH, src_buf_size, &src_dma_fd, (void **)&src_buf);
-    if (ret < 0) {
-        printf("alloc src CMA buffer failed!\n");
-        return -1;
-    }
+	#if USE_ASYNC_RKNN
+	ret = pthread_create(&venc_rknn_thread, NULL, rknn_thread, NULL);
+	if (ret != 0) {
+		printf("rknn_thread pthread create fail %x", ret);
+	}
+	#endif
 
-    ret = dma_buf_alloc(RV1106_CMA_HEAP_PATH, dst_buf_size, &dst_dma_fd, (void **)&dst_buf);
-    if (ret < 0) {
-        printf("alloc dst CMA buffer failed!\n");
-        dma_buf_free(src_buf_size, &src_dma_fd, src_buf);
-        return -1;
-    }
-#endif 
+	ret = image_hanlde_init(); 
+	if (ret != 0) {
+		printf("image_hanlde_init fail %x", ret);
+	}
 
 	printf("venc init success\n");	
 	int person_dectetime = 0;
 	int fire_state = 0;
 	int dect_demo = 0;
 	printf("Compilation Date: %s\n", COMPILATION_DATE);
-
+	object_detect_result_list run_result;
 	while(1)
 	{	
+		pre_debug_time();
 		// get vpss frame
 		s32Ret = RK_MPI_VPSS_GetChnFrame(0,0, &stVpssFrame,-1); 											/*18.1ms*/
+		pre_debug_time();
 		if(s32Ret == RK_SUCCESS)
 		{
-			
+			pre_debug_time();
 			void *data = RK_MPI_MB_Handle2VirAddr(stVpssFrame.stVFrame.pMbBlk);								/*0.7ms*/
+			pre_debug_time();
 			
-			//opencv	
 			cv::Mat frame(height,width,CV_8UC3,data);	
-			/*		
-			//cv::Mat frame640;
-        	//cv::resize(frame, frame640, cv::Size(640,640), 0, 0, cv::INTER_LINEAR);	
-			//letterbox
-			*/
 			cv::Mat letterboxImage = pollingdecetbox(frame); 												/*104.4ms*/
 			//cv::Mat letterboxImage = letterbox(frame, width, height);
-			
-			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3); /*6.5ms*/
-			inference_yolov5_model(&rknn_app_ctx, &od_results); 											/*97ms*/
+		#if USE_ASYNC_RKNN
+			/*获取帧为串行模式 opencv 和 rknn 处理为 队列模式 处理结果和实际输出图像有一帧延迟 */
+			while (rkn_queue_add(letterboxImage) < 0);
 			/*draw result*/
-			draw_result(frame, &od_results);
+			while (rkn_result_get(&run_result) < 0);
+		#else
+			memcpy(rknn_app_ctx.input_mems[0]->virt_addr, letterboxImage.data, model_width*model_height*3); /*6.5ms*/
+			inference_yolov5_model(&rknn_app_ctx, &run_result); 	
+		#endif
+			
+			//pre_debug_time();
+			draw_result(frame, &run_result); 
 			memcpy(data, frame.data, width * height * 3);	/*7.4ms*/
-						
+			pre_debug_time();
 		}
 		
 
 		// send stream
 		// encode H264
 		RK_MPI_VENC_SendFrame(0, &stVpssFrame,-1);
+		pre_debug_time();
 		
 		// release frame 
 		s32Ret = RK_MPI_VPSS_ReleaseChnFrame(0, 0, &stVpssFrame);
 		if (s32Ret != RK_SUCCESS) {
 			RK_LOGE("RK_MPI_VI_ReleaseChnFrame fail %x", s32Ret);
 		}
+		pre_debug_time();
 				
 	}
 
@@ -369,19 +351,8 @@ int main(int argc, char *argv[]) {
 	RK_MPI_VENC_StopRecvFrame(0);
 	RK_MPI_VENC_DestroyChn(0);
 
-
-#ifdef USE_RGA_RESIZE  /*目前RGA 终止程序时会有buff无法释放的情况*/
 release_buffer:
-    if (src_handle)
-        releasebuffer_handle(src_handle);
-    if (dst_handle)
-        releasebuffer_handle(dst_handle);
-
-    if (src_buf)
-        free(src_buf);
-    if (dst_buf)
-        free(dst_buf);
-#endif
+	image_hanle_free();
 
 	if (g_rtsplive)
 		rtsp_del_demo(g_rtsplive);

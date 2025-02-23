@@ -12,6 +12,28 @@
 
 #define RAW_IMAGE_WIDTH  1920
 #define RAW_IMAGE_HEIGHT 1080
+//#define USE_RGA_RESIZE 
+#define USE_ASYNC_RKNN 1
+
+#ifdef USE_RGA_RESIZE
+#include "im2d_version.h"
+#include "im2d_common.h"
+#include "RgaUtils.h"
+#include "im2d.hpp"
+#include "dma_alloc.h"
+#endif
+
+
+#if 0
+extern struct timeval time_debug;
+#define pre_debug_time() do {\
+    gettimeofday( &time_debug, NULL );\
+	printf(" %d time: %3.4f \r\n", __LINE__ ,time_debug.tv_sec + time_debug.tv_usec*1e-6);\
+}while(0)
+#else
+#define pre_debug_time() 
+#endif
+
 
 typedef struct {
     // disp size
@@ -32,8 +54,8 @@ typedef struct {
     
     int leftPadding;
     int topPadding;
-    int cat_midpoint_x; //cat midpoint x
-    int cat_midpoint_y; //cat midpoint x
+    int target_s_x; //cat midpoint x
+    int target_e_x; //cat midpoint x
 
     int region_sX;
 
@@ -41,8 +63,9 @@ typedef struct {
     int sY;
     int eX;
     int eY; 
-}dect_ret_t;
 
+    int target_have;
+}dect_ret_t;
 
 cv::Mat letterbox(cv::Mat input, int iwidth, int iheight);
 
@@ -55,5 +78,14 @@ void draw_result(cv::Mat frame, void *od_results)/*8.2ms*/;
 int get_model_hight();
 
 int get_model_width();
+
+int image_hanle_free();
+
+int image_hanlde_init();
+void *rknn_thread(void *arg);
+int rkn_queue_add(cv::Mat frame);
+
+extern int model_height;
+extern int model_width;
 
 #endif //_IMAGE_HANDLE_H_

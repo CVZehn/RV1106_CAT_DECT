@@ -5,6 +5,7 @@
         "string_view": "cpp",
         "unistd.h": "c",
         "mqttasync.h": "c",
-        "pubsub_c_opts.h": "c"
+        "pubsub_c_opts.h": "c",
+        "vector": "cpp"
     }
 }
