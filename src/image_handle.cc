@@ -192,6 +192,7 @@ void draw_result(cv::Mat frame, void *results)/*8.2ms*/
 			printf("%s @ (%d %d %d %d) %.3f\n", coco_cls_to_name(det_result->cls_id),
 					 detect_result.sX, detect_result.sY, detect_result.eX, detect_result.eY, det_result->prop);
 
+		#if DRAW_LINE
 			cv::rectangle(frame,cv::Point(detect_result.sX ,detect_result.sY),
 						        cv::Point(detect_result.eX ,detect_result.eY),
 								cv::Scalar(0,255,0),3);
@@ -200,6 +201,7 @@ void draw_result(cv::Mat frame, void *results)/*8.2ms*/
 										 cv::FONT_HERSHEY_SIMPLEX,1,
 										 cv::Scalar(0,255,0),2);
 
+		#endif
 			if(det_result->cls_id == 15 || det_result->cls_id == 16)
 			{
 				cat_dected = 1;

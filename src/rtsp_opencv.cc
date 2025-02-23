@@ -321,14 +321,14 @@ int main(int argc, char *argv[]) {
 			
 			//pre_debug_time();
 			draw_result(frame, &run_result); 
-			memcpy(data, frame.data, width * height * 3);	/*7.4ms*/
-			pre_debug_time();
+			//memcpy(data, frame.data, width * height * 3);	/*7.4ms*/
+			//pre_debug_time();
 		}
 		
 
 		// send stream
 		// encode H264
-		RK_MPI_VENC_SendFrame(0, &stVpssFrame,-1);
+		//RK_MPI_VENC_SendFrame(0, &stVpssFrame,-1);
 		pre_debug_time();
 		
 		// release frame 

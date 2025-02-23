@@ -12,8 +12,9 @@
 
 #define RAW_IMAGE_WIDTH  1920
 #define RAW_IMAGE_HEIGHT 1080
-//#define USE_RGA_RESIZE 
+#define USE_RGA_RESIZE 
 #define USE_ASYNC_RKNN 1
+#define DRAW_LINE 0
 
 #ifdef USE_RGA_RESIZE
 #include "im2d_version.h"
